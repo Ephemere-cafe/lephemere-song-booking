@@ -8,7 +8,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600&family=Noto+Sans+TC:wght@400;500;700&display=swap');
 
 *{box-sizing:border-box;}
-body{margin:0;background:#241f30;font-family:'Noto Sans TC',sans-serif;}
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(192,123,138,0.10),transparent 42%),
+    var(--ink-deep);
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:15px;
+  line-height:1.65;
+}
 :root{
   --ink:#241f30; --ink-deep:#191420; --card:#2d2738;
   --parchment:#f3ece1; --parchment-dim:#c7bfae;
@@ -18,17 +27,24 @@ body{margin:0;background:#241f30;font-family:'Noto Sans TC',sans-serif;}
   --mist:#a79bc4; --line:rgba(243,236,225,0.12);
 }
 .wrap{
-  background:var(--ink); color:var(--parchment); padding:28px 22px 34px;
-  border-radius:14px; max-width:640px; margin:0 auto; position:relative;
-  overflow:hidden; min-height:100vh;
+  background:var(--ink);
+  color:var(--parchment);
+  padding:40px 36px 52px;
+  border-radius:18px;
+  max-width:760px;
+  margin:24px auto;
+  position:relative;
+  overflow:hidden;
+  min-height:calc(100vh - 48px);
+  box-shadow:0 24px 70px rgba(0,0,0,0.24);
 }
-.content-grid{ display:grid; grid-template-columns:1fr; gap:14px; }
-.content-grid .col-side{ order:-1; }
-.content-grid .col-main .panel{ margin-bottom:14px; }
+.content-grid{display:grid;grid-template-columns:1fr;gap:20px;}
+.content-grid .col-side{order:0;}
+.content-grid .col-main .panel{margin-bottom:20px;}
 .content-grid .col-main .panel:last-child{ margin-bottom:0; }
 @media (min-width:860px){
-  .wrap{ max-width:960px; }
-  .content-grid{ grid-template-columns:1fr 300px; align-items:start; }
+  .wrap{max-width:1080px;}
+  .content-grid{grid-template-columns:minmax(0,1fr) 330px;gap:24px;align-items:start;}
   .content-grid .col-side{ order:0; }
 }
 .petal{
@@ -39,66 +55,101 @@ body{margin:0;background:#241f30;font-family:'Noto Sans TC',sans-serif;}
 
 .header{
   position:relative; z-index:1; display:flex; justify-content:space-between; align-items:flex-end;
-  margin-bottom:22px; padding-bottom:16px; border-bottom:1px solid var(--line);
+  margin-bottom:30px; padding-bottom:22px; border-bottom:1px solid var(--line);
 }
-.brand h1{font-family:'Noto Serif TC',serif;font-weight:600;font-size:21px;margin:0 0 2px;letter-spacing:0.02em;}
-.brand p{margin:0;font-size:12px;color:var(--parchment-dim);letter-spacing:0.05em;}
-.clock{text-align:right;font-size:12px;color:var(--parchment-dim);}
-.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;}
+.brand h1{font-family:'Noto Serif TC',serif;font-weight:600;font-size:27px;margin:0 0 4px;letter-spacing:0.03em;}
+.brand p{margin:0;font-size:13px;color:var(--parchment-dim);letter-spacing:0.08em;}
+.clock{text-align:right;font-size:13px;color:var(--parchment-dim);}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;}
 .dot.online{background:var(--sage);}
 .dot.offline{background:var(--rose);}
 
-.panel{position:relative;z-index:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
-.panel-title{font-size:12px;color:var(--mist);letter-spacing:0.06em;margin:0 0 10px;text-transform:uppercase;}
+.panel{
+  position:relative;
+  z-index:1;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:22px 24px;
+  margin-bottom:20px;
+  box-shadow:0 12px 32px rgba(0,0,0,0.10);
+}
+.panel-title{
+  font-family:'Noto Serif TC',serif;
+  font-size:14px;
+  font-weight:600;
+  color:var(--mist);
+  letter-spacing:0.07em;
+  margin:0 0 16px;
+  text-transform:uppercase;
+}
+.full-notice{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  width:100%;
+  padding:18px 20px;
+  border:1px solid rgba(192,123,138,0.48);
+  border-radius:8px;
+  background:rgba(192,123,138,0.10);
+}
+.full-notice strong{
+  color:var(--rose);
+  font-family:'Noto Serif TC',serif;
+  font-size:17px;
+  letter-spacing:0.05em;
+}
+.full-notice span{color:var(--parchment-dim);font-size:14px;line-height:1.7;}
+#dateList{display:flex;flex-wrap:wrap;gap:10px;}
 
 #rulesContent > *:first-child{margin-top:0;}
 .rules-title{
   text-align:center; font-family:'Noto Serif TC',serif; font-weight:600;
-  font-size:15px; color:var(--gold); letter-spacing:0.08em; margin:2px 0 14px;
+  font-size:18px; color:var(--gold); letter-spacing:0.08em; margin:2px 0 18px;
 }
 .rules-h2{
-  font-weight:700; color:var(--gold); font-size:13px; letter-spacing:0.03em;
-  margin:16px 0 6px; padding-bottom:4px; border-bottom:1px solid var(--line);
+  font-weight:700; color:var(--gold); font-size:15px; letter-spacing:0.03em;
+  margin:20px 0 8px; padding-bottom:6px; border-bottom:1px solid var(--line);
 }
 .rules-h2-plain{ color:var(--rose); border-bottom-color:rgba(192,123,138,0.28); }
 .rules-highlight{
   font-weight:600; color:var(--parchment); background:rgba(202,160,107,0.08);
   border-left:2px solid var(--gold-dim); padding:6px 10px; border-radius:0 6px 6px 0;
-  margin:14px 0 6px; font-size:13px;
+  margin:16px 0 8px; font-size:14px;
 }
-.rules-li{ display:flex; gap:8px; align-items:flex-start; margin:3px 0 3px 4px; font-size:13px; color:var(--parchment-dim); }
+.rules-li{ display:flex; gap:9px; align-items:flex-start; margin:5px 0 5px 4px; font-size:14px; color:var(--parchment-dim); }
 .rules-dot{ flex:none; width:5px; height:5px; border-radius:50%; background:var(--gold-dim); margin-top:7px; }
-.rules-p{ font-size:13px; color:var(--parchment-dim); margin:2px 0 6px; line-height:1.7; }
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.rules-p{font-size:14px;color:var(--parchment-dim);margin:3px 0 8px;line-height:1.8;}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
 
 input[type=text]{
   background:var(--ink-deep);border:1px solid var(--line);color:var(--parchment);
-  border-radius:7px;padding:9px 11px;font-size:14px;font-family:inherit;
+  min-height:46px;border-radius:9px;padding:11px 13px;font-size:16px;font-family:inherit;
 }
 input::placeholder{color:var(--parchment-dim);}
-input:focus{outline:none;border-color:var(--gold-dim);}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset:1px;border-color:var(--gold);}
 
-.btn{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);border-radius:7px;padding:9px 16px;font-size:13px;font-family:inherit;cursor:pointer;white-space:nowrap;}
+.btn{min-height:44px;background:transparent;border:1px solid var(--gold-dim);color:var(--gold);border-radius:9px;padding:10px 18px;font-size:14px;font-family:inherit;cursor:pointer;white-space:nowrap;}
 .btn:hover{background:rgba(202,160,107,0.1);}
 .btn.primary{background:var(--gold-dim);color:var(--ink-deep);border-color:var(--gold-dim);font-weight:500;}
 .btn.primary:hover{background:var(--gold);}
 .btn.ghost{border-color:var(--line);color:var(--parchment-dim);}
 .btn.ghost:hover{color:var(--parchment);border-color:var(--parchment-dim);}
-.btn.small{padding:6px 12px;font-size:12px;}
+.btn.small{padding:8px 14px;font-size:13px;}
 
 .chip{
   display:inline-flex;align-items:center;gap:6px;background:var(--ink-deep);
-  border:1px solid var(--line);border-radius:20px;padding:7px 14px;font-size:13px;
-  cursor:pointer;margin:0 6px 6px 0;
+  min-height:44px;border:1px solid var(--line);border-radius:24px;padding:10px 17px;font-size:15px;
+  cursor:pointer;margin:0;
 }
 .chip:hover{border-color:var(--gold-dim);color:var(--gold);}
-.chip .artist{color:var(--parchment-dim);font-size:11px;}
+.chip .artist{color:var(--parchment-dim);font-size:12px;}
 
 .staff-chip{
   display:inline-flex;align-items:center;gap:6px;background:var(--ink-deep);
-  border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:12.5px;
+  border:1px solid var(--line);border-radius:20px;padding:8px 13px;font-size:14px;
 }
-.staff-chip .role{color:var(--mist);font-size:10.5px;}
+.staff-chip .role{color:var(--mist);font-size:12px;}
 .staff-check{
   display:flex;align-items:center;gap:8px;background:var(--ink-deep);
   border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:6px;
@@ -117,7 +168,7 @@ input:focus{outline:none;border-color:var(--gold-dim);}
 }
 .photo-modal-overlay.open{display:flex;}
 .photo-modal{
-  background:var(--ink);border:1px solid var(--gold-soft);border-radius:12px;
+  background:var(--ink);border:1px solid var(--gold-dim);border-radius:12px;
   padding:20px;max-width:340px;width:100%;
 }
 .photo-modal h4{font-family:'Noto Serif TC',serif;color:var(--gold);font-size:14px;margin-bottom:12px;}
@@ -130,12 +181,12 @@ input:focus{outline:none;border-color:var(--gold-dim);}
 .photo-modal input[type=range]{width:100%;margin:6px 0 14px;}
 .photo-modal-actions{display:flex;gap:8px;justify-content:flex-end;}
 
-.setup-toggle{font-size:12px;color:var(--mist);cursor:pointer;display:flex;align-items:center;gap:6px;margin-bottom:14px;position:relative;z-index:1;}
+.setup-toggle{font-size:14px;color:var(--mist);cursor:pointer;display:flex;align-items:center;gap:7px;margin-bottom:18px;position:relative;z-index:1;}
 .setup-body{display:none;}
 .setup-body.open{display:block;}
 .admin-section-label{
-  font-family:'Noto Serif TC',serif;font-size:13px;color:var(--gold);
-  margin:0 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line);
+  font-family:'Noto Serif TC',serif;font-size:15px;color:var(--gold);
+  margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);
 }
 
 .icon-btn{background:transparent;border:1px solid var(--line);color:var(--parchment-dim);width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:13px;flex-shrink:0;}
@@ -143,15 +194,43 @@ input:focus{outline:none;border-color:var(--gold-dim);}
 
 .selected-song{
   display:flex;justify-content:space-between;align-items:center;background:var(--ink-deep);
-  border:1px solid var(--gold-dim);border-radius:7px;padding:8px 12px;margin-bottom:6px;font-size:13px;
+  border:1px solid var(--gold-dim);border-radius:9px;padding:11px 14px;margin-bottom:8px;font-size:14px;
 }
 
-.configwarn{position:relative;z-index:1;background:#3a2b2b;border:1px solid var(--rose-dim);color:var(--parchment);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.6;}
+.configwarn{position:relative;z-index:1;background:#3a2b2b;border:1px solid var(--rose-dim);color:var(--parchment);border-radius:10px;padding:15px 17px;margin-bottom:18px;font-size:14px;line-height:1.7;}
 
-textarea{width:100%;min-height:110px;background:var(--ink-deep);border:1px solid var(--line);color:var(--parchment);border-radius:7px;padding:9px 11px;font-size:13px;font-family:inherit;resize:vertical;}
+textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid var(--line);color:var(--parchment);border-radius:9px;padding:11px 13px;font-size:15px;font-family:inherit;resize:vertical;}
 
-@media (max-width:480px){
-  .brand{font-size:0.95rem;}
+@media (max-width:640px){
+  body{background:var(--ink);}
+  .wrap{
+    width:100%;
+    min-height:100vh;
+    margin:0;
+    padding:24px 14px 36px;
+    border-radius:0;
+    box-shadow:none;
+  }
+  .header{align-items:flex-start;margin-bottom:22px;padding:0 4px 18px;}
+  .brand h1{font-size:22px;}
+  .brand p,.clock{font-size:12px;}
+  .panel{padding:18px 16px;border-radius:12px;margin-bottom:16px;}
+  .panel-title{font-size:13px;margin-bottom:14px;}
+  .content-grid{gap:16px;}
+  .content-grid .col-main .panel{margin-bottom:16px;}
+  #bookingForm input[type=text],
+  #bookingForm select{
+    width:100%!important;
+    min-width:0!important;
+    flex:1 1 100%!important;
+    min-height:46px;
+    font-size:16px!important;
+  }
+  #bookingForm .row .btn{flex:1 1 120px;}
+  .full-notice{padding:16px;}
+  .full-notice strong{font-size:16px;}
+  .chip{width:100%;justify-content:center;}
+  .photo-crop-stage{width:min(260px,72vw);height:min(260px,72vw);}
 }
 </style>
 </head>
@@ -174,7 +253,7 @@ textarea{width:100%;min-height:110px;background:var(--ink-deep);border:1px solid
 
   <div class="panel" id="rulesPanel" style="display:none;">
     <p class="panel-title">店規／注意事項</p>
-    <div id="rulesContent" style="font-size:13px;line-height:1.7;color:var(--parchment);"></div>
+    <div id="rulesContent" style="font-size:14px;line-height:1.8;color:var(--parchment);"></div>
   </div>
 
   <div class="content-grid">
@@ -188,7 +267,7 @@ textarea{width:100%;min-height:110px;background:var(--ink-deep);border:1px solid
     <div class="col-main">
       <div class="panel">
         <p class="panel-title">可預約日期（一天僅接一組）</p>
-        <div id="dateList"><span style="color:var(--parchment-dim);font-size:12px;">目前沒有開放的預約日期</span></div>
+        <div id="dateList"><span style="color:var(--parchment-dim);font-size:14px;">目前沒有開放的預約日期</span></div>
       </div>
 
       <div class="panel" id="bookingForm" style="display:none;">
@@ -219,7 +298,7 @@ textarea{width:100%;min-height:110px;background:var(--ink-deep);border:1px solid
           <button class="btn primary" id="submitBooking">確認預約</button>
           <button class="btn ghost" id="cancelBookingForm">取消</button>
         </div>
-        <p id="bookingError" style="font-size:12px;color:var(--rose);margin:8px 0 0;display:none;"></p>
+        <p id="bookingError" style="font-size:13px;color:var(--rose);margin:10px 0 0;display:none;"></p>
       </div>
     </div>
   </div>
@@ -640,10 +719,10 @@ textarea{width:100%;min-height:110px;background:var(--ink-deep);border:1px solid
   }
   function renderSelectedSongs(){
     var el = document.getElementById('selectedSongsList');
-    if(selectedSongs.length===0){ el.innerHTML = '<span style="font-size:12px;color:var(--parchment-dim);">尚未選擇歌曲（最多3首）</span>'; return; }
+    if(selectedSongs.length===0){ el.innerHTML = '<span style="font-size:14px;color:var(--parchment-dim);">尚未選擇歌曲（最多3首）</span>'; return; }
     var html = '';
     selectedSongs.forEach(function(s, i){
-      html += '<div class="selected-song"><span>'+escapeHtml(s.title)+(s.url?' <a href="'+escapeHtml(s.url)+'" target="_blank" rel="noopener" style="color:var(--gold);font-size:11px;">原曲連結</a>':'')+'</span>'
+      html += '<div class="selected-song"><span>'+escapeHtml(s.title)+(s.url?' <a href="'+escapeHtml(s.url)+'" target="_blank" rel="noopener" style="color:var(--gold);font-size:12px;">原曲連結</a>':'')+'</span>'
         + '<button class="icon-btn" data-remove-selected="'+i+'">✕</button></div>';
     });
     el.innerHTML = html;
@@ -677,9 +756,18 @@ textarea{width:100%;min-height:110px;background:var(--ink-deep);border:1px solid
     var el = document.getElementById('dateList');
     var reservedDates = {};
     Object.keys(reservations).forEach(function(id){ reservedDates[reservations[id].date] = true; });
-    var available = Object.keys(openDates).filter(function(d){ return !reservedDates[d]; }).sort();
+    var opened = Object.keys(openDates).sort();
+    var available = opened.filter(function(d){ return !reservedDates[d]; });
+    if(opened.length===0){
+      el.innerHTML = '<span style="color:var(--parchment-dim);font-size:14px;">目前沒有開放的預約日期</span>';
+      document.getElementById('bookingForm').style.display = 'none';
+      selectedDate = null;
+      return;
+    }
     if(available.length===0){
-      el.innerHTML = '<span style="color:var(--parchment-dim);font-size:12px;">目前沒有開放的預約日期</span>';
+      el.innerHTML = '<div class="full-notice" role="status"><strong>本次營業時段預約已額滿</strong><span>感謝您的關注，下一次預約開放資訊請留意官方公告。</span></div>';
+      document.getElementById('bookingForm').style.display = 'none';
+      selectedDate = null;
       return;
     }
     var html = '';
