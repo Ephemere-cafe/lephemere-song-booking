@@ -38,14 +38,16 @@ body{
   min-height:calc(100vh - 48px);
   box-shadow:0 24px 70px rgba(0,0,0,0.24);
 }
-.content-grid{display:grid;grid-template-columns:1fr;gap:20px;}
-.content-grid .col-side{order:0;}
-.content-grid .col-main .panel{margin-bottom:20px;}
-.content-grid .col-main .panel:last-child{ margin-bottom:0; }
+.booking-intro{position:relative;z-index:1;margin-bottom:20px;}
+.booking-intro h2{font-family:'Noto Serif TC',serif;font-size:21px;color:var(--gold);margin:0 0 7px;letter-spacing:.04em;}
+.booking-intro p{font-size:14px;color:var(--parchment-dim);margin:0;line-height:1.8;}
+.booking-top-grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:20px;align-items:start;margin-bottom:20px;}
+.booking-top-grid .panel{height:100%;margin-bottom:0;}
+.staff-empty{font-size:14px;color:var(--parchment-dim);line-height:1.7;}
+.booking-main .panel{margin-bottom:20px;}
+.booking-main .panel:last-child{margin-bottom:0;}
 @media (min-width:860px){
   .wrap{max-width:1080px;}
-  .content-grid{grid-template-columns:minmax(0,1fr) 330px;gap:24px;align-items:start;}
-  .content-grid .col-side{ order:0; }
 }
 .petal{
   position:absolute; width:10px; height:10px; border-radius:0 60% 0 60%;
@@ -127,7 +129,7 @@ input[type=text]{
   min-height:46px;border-radius:9px;padding:11px 13px;font-size:16px;font-family:inherit;
 }
 input::placeholder{color:var(--parchment-dim);}
-input:focus,select:focus,textarea:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset:1px;border-color:var(--gold);}
+input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset:1px;border-color:var(--gold);}
 
 .btn{min-height:44px;background:transparent;border:1px solid var(--gold-dim);color:var(--gold);border-radius:9px;padding:10px 18px;font-size:14px;font-family:inherit;cursor:pointer;white-space:nowrap;}
 .btn:hover{background:rgba(202,160,107,0.1);}
@@ -150,45 +152,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(202,160,107,0.28)
   border:1px solid var(--line);border-radius:20px;padding:8px 13px;font-size:14px;
 }
 .staff-chip .role{color:var(--mist);font-size:12px;}
-.staff-check{
-  display:flex;align-items:center;gap:8px;background:var(--ink-deep);
-  border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:6px;
-}
-.staff-check label{flex:1;font-size:13px;cursor:pointer;}
-.staff-check-photo{
-  width:32px;height:32px;border-radius:50%;flex:none;overflow:hidden;
-  background:var(--ink);border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--parchment-dim);
-}
-.staff-check-photo img{width:100%;height:100%;object-fit:cover;}
-
-.photo-modal-overlay{
-  display:none;position:fixed;inset:0;background:rgba(10,8,16,0.72);z-index:200;
-  align-items:center;justify-content:center;padding:20px;
-}
-.photo-modal-overlay.open{display:flex;}
-.photo-modal{
-  background:var(--ink);border:1px solid var(--gold-dim);border-radius:12px;
-  padding:20px;max-width:340px;width:100%;
-}
-.photo-modal h4{font-family:'Noto Serif TC',serif;color:var(--gold);font-size:14px;margin-bottom:12px;}
-.photo-crop-stage{
-  width:260px;height:260px;margin:0 auto 12px;border-radius:50%;overflow:hidden;
-  background:var(--ink-deep);cursor:grab;position:relative;border:1px solid var(--line);
-}
-.photo-crop-stage:active{cursor:grabbing;}
-.photo-crop-stage canvas{display:block;}
-.photo-modal input[type=range]{width:100%;margin:6px 0 14px;}
-.photo-modal-actions{display:flex;gap:8px;justify-content:flex-end;}
-
-.setup-toggle{font-size:14px;color:var(--mist);cursor:pointer;display:flex;align-items:center;gap:7px;margin-bottom:18px;position:relative;z-index:1;}
-.setup-body{display:none;}
-.setup-body.open{display:block;}
-.admin-section-label{
-  font-family:'Noto Serif TC',serif;font-size:15px;color:var(--gold);
-  margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);
-}
-
 .icon-btn{background:transparent;border:1px solid var(--line);color:var(--parchment-dim);width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:13px;flex-shrink:0;}
 .icon-btn:hover{color:var(--parchment);border-color:var(--parchment-dim);}
 
@@ -198,8 +161,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(202,160,107,0.28)
 }
 
 .configwarn{position:relative;z-index:1;background:#3a2b2b;border:1px solid var(--rose-dim);color:var(--parchment);border-radius:10px;padding:15px 17px;margin-bottom:18px;font-size:14px;line-height:1.7;}
-
-textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid var(--line);color:var(--parchment);border-radius:9px;padding:11px 13px;font-size:15px;font-family:inherit;resize:vertical;}
 
 @media (max-width:640px){
   body{background:var(--ink);}
@@ -216,8 +177,8 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
   .brand p,.clock{font-size:12px;}
   .panel{padding:18px 16px;border-radius:12px;margin-bottom:16px;}
   .panel-title{font-size:13px;margin-bottom:14px;}
-  .content-grid{gap:16px;}
-  .content-grid .col-main .panel{margin-bottom:16px;}
+  .booking-top-grid{grid-template-columns:1fr;gap:16px;margin-bottom:16px;}
+  .booking-main .panel{margin-bottom:16px;}
   #bookingForm input[type=text],
   #bookingForm select{
     width:100%!important;
@@ -230,7 +191,6 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
   .full-notice{padding:16px;}
   .full-notice strong{font-size:16px;}
   .chip{width:100%;justify-content:center;}
-  .photo-crop-stage{width:min(260px,72vw);height:min(260px,72vw);}
 }
 </style>
 </head>
@@ -251,25 +211,24 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
     尚未設定 Firebase 連線資訊，請在程式碼中填入 firebaseConfig 後重新上傳。
   </div>
 
-  <div class="panel" id="rulesPanel" style="display:none;">
-    <p class="panel-title">店規／注意事項</p>
-    <div id="rulesContent" style="font-size:14px;line-height:1.8;color:var(--parchment);"></div>
+  <div class="booking-intro">
+    <h2>選擇今晚的預約時段</h2>
+    <p>每個營業時段僅接待一組主人。請先選擇日期，系統會顯示當日值班人員與可指名的女僕。</p>
   </div>
 
-  <div class="content-grid">
-    <div class="col-side">
-      <div class="panel" id="todayStaffPanel" style="display:none;">
-        <p class="panel-title" id="todayStaffTitle">在班店員</p>
-        <div id="todayStaffContent" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-      </div>
-    </div>
-
-    <div class="col-main">
+  <div class="booking-top-grid">
       <div class="panel">
         <p class="panel-title">可預約日期（一天僅接一組）</p>
         <div id="dateList"><span style="color:var(--parchment-dim);font-size:14px;">目前沒有開放的預約日期</span></div>
       </div>
 
+      <div class="panel" id="todayStaffPanel">
+        <p class="panel-title" id="todayStaffTitle">選擇日期後顯示值班人員</p>
+        <div id="todayStaffContent"><span class="staff-empty">請先從左側選擇想預約的日期。</span></div>
+      </div>
+  </div>
+
+  <div class="booking-main">
       <div class="panel" id="bookingForm" style="display:none;">
         <p class="panel-title">填寫預約資料 · <span id="selectedDateLabel"></span></p>
         <div class="row">
@@ -300,84 +259,16 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
         </div>
         <p id="bookingError" style="font-size:13px;color:var(--rose);margin:10px 0 0;display:none;"></p>
       </div>
-    </div>
+      <div class="panel" id="rulesPanel" style="display:none;">
+        <p class="panel-title">預約須知</p>
+        <div id="rulesContent" style="font-size:14px;line-height:1.8;color:var(--parchment);"></div>
+      </div>
   </div>
 
-  <div style="position:relative;z-index:1;text-align:center;margin-top:24px;">
-    <span id="djLoginToggle" style="font-size:11px;color:var(--parchment-dim);cursor:pointer;user-select:none;">樂手／管理登入</span>
-  </div>
-
-  <div class="panel" id="djLoginBody" style="display:none;">
-    <p class="panel-title">管理登入</p>
-    <div class="row">
-      <input type="text" id="adminEmail" placeholder="帳號 Email" style="flex:1;min-width:140px;">
-      <input type="text" id="adminPassword" placeholder="密碼" style="flex:1;min-width:100px;">
-      <button class="btn primary" id="adminLoginBtn">登入</button>
-    </div>
-    <p id="loginError" style="font-size:12px;color:var(--rose);margin:8px 0 0;display:none;">帳號或密碼錯誤</p>
-  </div>
-
-  <div class="setup-toggle" id="djToggle" style="display:none;">
-    <span>♪ 管理設定</span> <span id="djChevron">▾</span>
-    <button class="btn ghost small" id="adminLogoutBtn" style="margin-left:auto;">登出</button>
-  </div>
-  <div class="panel setup-body" id="djBody">
-    <p class="admin-section-label">📋 店規／注意事項</p>
-    <textarea id="rulesEditor" placeholder="輸入店規或注意事項"></textarea>
-    <div class="row" style="margin-top:8px;">
-      <button class="btn primary" id="saveRules">儲存店規</button>
-      <button class="btn ghost" id="hideRules">目前不顯示</button>
-    </div>
-    <p style="font-size:11.5px;color:var(--parchment-dim);margin:8px 0 0;">儲存後立刻顯示在頁面最上方。留空並儲存則不顯示這個區塊。</p>
-
-    <p class="admin-section-label" style="margin-top:26px;">👥 店員名單／在班設定</p>
-    <p class="panel-title">新增店員到名單</p>
-    <div class="row">
-      <input type="text" id="newStaffName" placeholder="店員名稱" style="flex:1;min-width:100px;">
-      <input type="text" id="newStaffRole" placeholder="角色（如：店長／女僕／樂手）" style="flex:1;min-width:140px;">
-      <button class="btn primary" id="addStaff">加入名單</button>
-    </div>
-    <p class="panel-title" style="margin-top:16px;">勾選有上班的店員</p>
-    <div id="staffCheckList" style="margin-bottom:10px;">尚未建立店員名單</div>
-    <div class="row" style="margin-bottom:8px;">
-      <input type="text" id="onDutyDate" placeholder="日期 YYYY-MM-DD" style="min-width:130px;">
-    </div>
-    <button class="btn primary" id="updateTodayStaff">更新在班名單</button>
-    <p style="font-size:11.5px;color:var(--parchment-dim);margin:8px 0 0;">這份名單會持續顯示給客人看，直到下次更新為止。日期欄位僅供你自己記錄。</p>
-
-    <p class="admin-section-label" style="margin-top:26px;">🕯 預約管理</p>
-    <p class="panel-title">開放可預約日期</p>
-    <div class="row">
-      <input type="text" id="newOpenDate" placeholder="日期 YYYY-MM-DD" style="min-width:140px;">
-      <button class="btn primary" id="addOpenDate">開放此日期</button>
-    </div>
-    <div id="openDateManageList" style="margin-top:10px;"></div>
-
-    <p class="panel-title" style="margin-top:16px;">目前預約總覽</p>
-    <div id="adminReservationList" style="font-size:12.5px;">尚無預約</div>
-  </div>
-
-</div>
-
-<div class="photo-modal-overlay" id="photoModalOverlay">
-  <div class="photo-modal">
-    <h4>設定店員頭貼</h4>
-    <div class="photo-crop-stage" id="photoCropStage">
-      <canvas id="photoCropCanvas" width="260" height="260"></canvas>
-    </div>
-    <input type="file" id="photoFileInput" accept="image/*" style="font-size:12px;margin-bottom:8px;width:100%;">
-    <input type="range" id="photoZoomSlider" min="100" max="400" value="100">
-    <p style="font-size:11px;color:var(--parchment-dim);margin:-8px 0 12px;">選好照片後，拖曳可移動位置，滑桿可縮放</p>
-    <div class="photo-modal-actions">
-      <button class="btn ghost" id="photoModalCancel">取消</button>
-      <button class="btn primary" id="photoModalSave">儲存頭貼</button>
-    </div>
-  </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script>
 (function(){
 
@@ -398,10 +289,11 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
   var reservations = {};
   var staffRoster = {};
   var todayStaff = {};
+  var staffSchedules = {};
   var webhookUrl = '';
   var selectedDate = null;
   var selectedSongs = []; // [{title, url}]
-  var db, openDatesRef, reservationsRef, webhookRef, rulesRef, staffRosterRef, todayStaffRef;
+  var db, openDatesRef, reservationsRef, webhookRef, rulesRef, staffRosterRef, todayStaffRef, staffSchedulesRef;
 
   function petals(){
     var wrap = document.getElementById('wrap');
@@ -469,6 +361,7 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
     rulesRef = db.ref('lephemere/rules');
     staffRosterRef = db.ref('lephemere/staffRoster');
     todayStaffRef = db.ref('lephemere/todayStaff');
+    staffSchedulesRef = db.ref('lephemere/staffSchedules');
 
     db.ref('.info/connected').on('value', function(snap){
       document.getElementById('connDot').className = snap.val()===true ? 'dot online' : 'dot offline';
@@ -485,34 +378,34 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
       }else{
         panel.style.display = 'none';
       }
-      document.getElementById('rulesEditor').value = text;
     });
 
     staffRosterRef.on('value', function(snap){
       staffRoster = snap.val() || {};
-      renderStaffCheckList();
       renderMaidOptions();
+      renderTodayStaff();
     });
 
     todayStaffRef.on('value', function(snap){
       todayStaff = snap.val() || {};
+      renderMaidOptions();
       renderTodayStaff();
-      var dateInput = document.getElementById('onDutyDate');
-      if(dateInput && !dateInput.value){
-        dateInput.value = todayStaff.date || todayKey();
-      }
+    });
+
+    staffSchedulesRef.on('value', function(snap){
+      staffSchedules = snap.val() || {};
+      renderMaidOptions();
+      renderTodayStaff();
     });
 
     openDatesRef.on('value', function(snap){
       openDates = snap.val() || {};
       renderDateList();
-      renderOpenDateManageList();
     });
 
     reservationsRef.on('value', function(snap){
       reservations = snap.val() || {};
       renderDateList();
-      renderAdminReservations();
     });
   }
 
@@ -520,14 +413,23 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
   function renderMaidOptions(){
     var sel = document.getElementById('bookMaid');
     var current = sel.value;
-    var keys = Object.keys(staffRoster);
+    var schedule = selectedDate && staffSchedules[selectedDate];
+    var legacySchedule = selectedDate && todayStaff.date===selectedDate && Array.isArray(todayStaff.staffIds) ? todayStaff : null;
+    if(!schedule && legacySchedule) schedule = legacySchedule;
+    var hasSchedule = !!(schedule && Array.isArray(schedule.staffIds));
+    var keys = hasSchedule
+      ? schedule.staffIds.filter(function(id){ return !!staffRoster[id]; })
+      : Object.keys(staffRoster);
     var excluded = ['店長','樂手'];
     var maidKeys = keys.filter(function(k){
       var role = (staffRoster[k].role || '').trim();
       return excluded.indexOf(role) === -1;
     });
-    var useKeys = maidKeys.length ? maidKeys : keys;
+    var useKeys = hasSchedule ? maidKeys : (maidKeys.length ? maidKeys : keys);
     var html = '<option value="">指名女僕（選填）</option>';
+    if(hasSchedule && useKeys.length===0){
+      html += '<option value="" disabled>此時段沒有可指名的女僕</option>';
+    }
     useKeys.forEach(function(k){
       var s = staffRoster[k];
       html += '<option value="'+escapeHtml(s.name)+'">'+escapeHtml(s.name)+(s.role?'（'+escapeHtml(s.role)+'）':'')+'</option>';
@@ -536,176 +438,43 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
     if(useKeys.some(function(k){ return staffRoster[k].name === current; })) sel.value = current;
   }
 
-  function renderStaffCheckList(){
-    var el = document.getElementById('staffCheckList');
-    var keys = Object.keys(staffRoster);
-    if(keys.length===0){ el.innerHTML = '尚未建立店員名單'; return; }
-    var currentOnDuty = todayStaff.staffIds || [];
-    var html = '';
-    keys.forEach(function(k){
-      var s = staffRoster[k];
-      var checked = currentOnDuty.indexOf(k) > -1 ? 'checked' : '';
-      var photoInner = s.photo ? '<img src="'+s.photo+'" alt="">' : '';
-      html += '<div class="staff-check"><input type="checkbox" data-staff-id="'+k+'" '+checked+'>'
-        + '<div class="staff-check-photo">'+photoInner+'</div>'
-        + '<label>'+escapeHtml(s.name)+' <span style="color:var(--parchment-dim);font-size:11px;">· '+escapeHtml(s.role||'')+'</span></label>'
-        + '<button class="icon-btn" data-photo-staff="'+k+'" title="設定頭貼">📷</button>'
-        + '<button class="icon-btn" data-remove-staff="'+k+'" title="從名單刪除">✕</button>'
-        + '</div>';
-    });
-    el.innerHTML = html;
-    el.querySelectorAll('[data-remove-staff]').forEach(function(btn){
-      btn.addEventListener('click', function(){ staffRosterRef.child(btn.getAttribute('data-remove-staff')).remove(); });
-    });
-    el.querySelectorAll('[data-photo-staff]').forEach(function(btn){
-      btn.addEventListener('click', function(){ openPhotoEditor(btn.getAttribute('data-photo-staff')); });
-    });
-  }
-
-  // ---------- photo cropper ----------
-  var photoEditStaffId = null;
-  var photoImg = null;
-  var photoScale = 1, photoBaseScale = 1, photoOffX = 0, photoOffY = 0;
-  var photoDragging = false, photoDragStartX = 0, photoDragStartY = 0, photoStartOffX = 0, photoStartOffY = 0;
-  var photoCanvas = document.getElementById('photoCropCanvas');
-  var photoCtx = photoCanvas ? photoCanvas.getContext('2d') : null;
-
-  function openPhotoEditor(staffId){
-    photoEditStaffId = staffId;
-    photoImg = null;
-    document.getElementById('photoFileInput').value = '';
-    document.getElementById('photoZoomSlider').value = 100;
-    if(photoCtx) photoCtx.clearRect(0,0,260,260);
-    var existing = staffRoster[staffId] && staffRoster[staffId].photo;
-    if(existing){
-      var im = new Image();
-      im.onload = function(){ photoImg = im; fitPhotoToStage(); drawPhotoCanvas(); };
-      im.src = existing;
-    }
-    document.getElementById('photoModalOverlay').classList.add('open');
-  }
-  function closePhotoEditor(){
-    document.getElementById('photoModalOverlay').classList.remove('open');
-    photoEditStaffId = null;
-    photoImg = null;
-  }
-  function fitPhotoToStage(){
-    if(!photoImg) return;
-    photoBaseScale = Math.max(260/photoImg.width, 260/photoImg.height);
-    photoScale = 1;
-    photoOffX = 0; photoOffY = 0;
-    document.getElementById('photoZoomSlider').value = 100;
-  }
-  function drawPhotoCanvas(){
-    if(!photoCtx) return;
-    photoCtx.clearRect(0,0,260,260);
-    if(!photoImg) return;
-    var s = photoBaseScale * photoScale;
-    var w = photoImg.width * s, h = photoImg.height * s;
-    var x = (260 - w)/2 + photoOffX;
-    var y = (260 - h)/2 + photoOffY;
-    photoCtx.drawImage(photoImg, x, y, w, h);
-  }
-  var fileInputEl = document.getElementById('photoFileInput');
-  if(fileInputEl) fileInputEl.addEventListener('change', function(e){
-    var file = e.target.files && e.target.files[0];
-    if(!file) return;
-    var reader = new FileReader();
-    reader.onload = function(ev){
-      var im = new Image();
-      im.onload = function(){ photoImg = im; fitPhotoToStage(); drawPhotoCanvas(); };
-      im.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
-  var zoomSliderEl = document.getElementById('photoZoomSlider');
-  if(zoomSliderEl) zoomSliderEl.addEventListener('input', function(e){
-    photoScale = e.target.value / 100;
-    drawPhotoCanvas();
-  });
-  var stageEl = document.getElementById('photoCropStage');
-  if(stageEl){
-    stageEl.addEventListener('mousedown', function(e){
-      if(!photoImg) return;
-      photoDragging = true;
-      photoDragStartX = e.clientX; photoDragStartY = e.clientY;
-      photoStartOffX = photoOffX; photoStartOffY = photoOffY;
-    });
-    window.addEventListener('mousemove', function(e){
-      if(!photoDragging) return;
-      photoOffX = photoStartOffX + (e.clientX - photoDragStartX);
-      photoOffY = photoStartOffY + (e.clientY - photoDragStartY);
-      drawPhotoCanvas();
-    });
-    window.addEventListener('mouseup', function(){ photoDragging = false; });
-    stageEl.addEventListener('touchstart', function(e){
-      if(!photoImg || !e.touches[0]) return;
-      photoDragging = true;
-      photoDragStartX = e.touches[0].clientX; photoDragStartY = e.touches[0].clientY;
-      photoStartOffX = photoOffX; photoStartOffY = photoOffY;
-    });
-    stageEl.addEventListener('touchmove', function(e){
-      if(!photoDragging || !e.touches[0]) return;
-      photoOffX = photoStartOffX + (e.touches[0].clientX - photoDragStartX);
-      photoOffY = photoStartOffY + (e.touches[0].clientY - photoDragStartY);
-      drawPhotoCanvas();
-      e.preventDefault();
-    }, {passive:false});
-    stageEl.addEventListener('touchend', function(){ photoDragging = false; });
-  }
-  var cancelBtn = document.getElementById('photoModalCancel');
-  if(cancelBtn) cancelBtn.addEventListener('click', closePhotoEditor);
-  var saveBtn = document.getElementById('photoModalSave');
-  if(saveBtn) saveBtn.addEventListener('click', function(){
-    if(!photoEditStaffId || !photoImg){ closePhotoEditor(); return; }
-    var out = document.createElement('canvas');
-    out.width = 300; out.height = 300;
-    var octx = out.getContext('2d');
-    var s = photoBaseScale * photoScale * (300/260);
-    var w = photoImg.width * s, h = photoImg.height * s;
-    var x = (300 - w)/2 + photoOffX * (300/260);
-    var y = (300 - h)/2 + photoOffY * (300/260);
-    octx.drawImage(photoImg, x, y, w, h);
-    var dataUrl = out.toDataURL('image/webp', 0.85);
-    staffRosterRef.child(photoEditStaffId).child('photo').set(dataUrl);
-    closePhotoEditor();
-  });
-
   function renderTodayStaff(){
     var panel = document.getElementById('todayStaffPanel');
     var el = document.getElementById('todayStaffContent');
     var titleEl = document.getElementById('todayStaffTitle');
-    if(!todayStaff.staffIds || todayStaff.staffIds.length===0){ panel.style.display = 'none'; return; }
+    var displayDate = selectedDate;
+    if(!displayDate){
+      titleEl.textContent = '選擇日期後顯示值班人員';
+      el.innerHTML = '<span class="staff-empty">請先選擇想預約的日期。</span>';
+      panel.style.display = 'block';
+      return;
+    }
+    var schedule = displayDate && staffSchedules[displayDate];
+    var staffIds = schedule && Array.isArray(schedule.staffIds)
+      ? schedule.staffIds
+      : (todayStaff.date===displayDate ? (todayStaff.staffIds||[]) : []);
+    if(!staffIds.length){
+      titleEl.textContent = formatDateLabel(displayDate)+' 值班人員';
+      el.innerHTML = '<span class="staff-empty">此日期尚未公布排班，指名女僕將暫不開放。</span>';
+      panel.style.display = 'block';
+      return;
+    }
     var html = '';
-    todayStaff.staffIds.forEach(function(id){
+    staffIds.forEach(function(id){
       var s = staffRoster[id];
       if(!s) return;
       html += '<span class="staff-chip">'+escapeHtml(s.name)+(s.role?' <span class="role">'+escapeHtml(s.role)+'</span>':'')+'</span>';
     });
-    if(!html){ panel.style.display = 'none'; return; }
-    titleEl.textContent = formatDateLabel(todayStaff.date) + ' 在班店員';
+    if(!html){
+      titleEl.textContent = formatDateLabel(displayDate)+' 值班人員';
+      el.innerHTML = '<span class="staff-empty">此日期尚未公布排班，指名女僕將暫不開放。</span>';
+      panel.style.display = 'block';
+      return;
+    }
+    titleEl.textContent = formatDateLabel(displayDate) + ' 在班店員';
     el.innerHTML = html;
     panel.style.display = 'block';
   }
-
-  document.getElementById('addStaff').addEventListener('click', function(){
-    if(!isConfigured) return;
-    var name = document.getElementById('newStaffName').value.trim();
-    var role = document.getElementById('newStaffRole').value.trim();
-    if(!name) return;
-    var key = staffRosterRef.push().key;
-    staffRosterRef.child(key).set({ name: name, role: role });
-    document.getElementById('newStaffName').value = '';
-    document.getElementById('newStaffRole').value = '';
-  });
-
-  document.getElementById('updateTodayStaff').addEventListener('click', function(){
-    if(!isConfigured) return;
-    var checked = document.querySelectorAll('#staffCheckList input[type=checkbox]:checked');
-    var ids = Array.prototype.map.call(checked, function(cb){ return cb.getAttribute('data-staff-id'); });
-    var dateInput = document.getElementById('onDutyDate').value.trim();
-    todayStaffRef.set({ date: dateInput || todayKey(), staffIds: ids });
-  });
 
   // ---------- song selection (max 3) ----------
   function addSelectedSong(song){
@@ -762,12 +531,16 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
       el.innerHTML = '<span style="color:var(--parchment-dim);font-size:14px;">目前沒有開放的預約日期</span>';
       document.getElementById('bookingForm').style.display = 'none';
       selectedDate = null;
+      renderMaidOptions();
+      renderTodayStaff();
       return;
     }
     if(available.length===0){
       el.innerHTML = '<div class="full-notice" role="status"><strong>本次營業時段預約已額滿</strong><span>感謝您的關注，下一次預約開放資訊請留意官方公告。</span></div>';
       document.getElementById('bookingForm').style.display = 'none';
       selectedDate = null;
+      renderMaidOptions();
+      renderTodayStaff();
       return;
     }
     var html = '';
@@ -779,6 +552,8 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
       chip.addEventListener('click', function(){
         selectedDate = chip.getAttribute('data-date');
         selectedSongs = [];
+        renderMaidOptions();
+        renderTodayStaff();
         document.getElementById('selectedDateLabel').textContent = selectedDate;
         document.getElementById('bookingForm').style.display = 'block';
         document.getElementById('bookingError').style.display = 'none';
@@ -792,6 +567,8 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
     document.getElementById('bookingForm').style.display = 'none';
     selectedDate = null;
     selectedSongs = [];
+    renderMaidOptions();
+    renderTodayStaff();
   });
 
   document.getElementById('submitBooking').addEventListener('click', function(){
@@ -805,6 +582,19 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
       errEl.textContent = '請填寫角色名跟人數';
       errEl.style.display = 'block';
       return;
+    }
+    if(maid){
+      var schedule = staffSchedules[selectedDate];
+      if(!schedule && todayStaff.date===selectedDate) schedule = todayStaff;
+      if(schedule && Array.isArray(schedule.staffIds)){
+        var maidStillAvailable = schedule.staffIds.some(function(id){ return staffRoster[id] && staffRoster[id].name===maid; });
+        if(!maidStillAvailable){
+          errEl.textContent = '這位女僕目前不在此日期的排班中，請重新選擇';
+          errEl.style.display = 'block';
+          renderMaidOptions();
+          return;
+        }
+      }
     }
     reservationsRef.once('value').then(function(snap){
       var current = snap.val() || {};
@@ -836,6 +626,8 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
       errEl.style.display = 'none';
       selectedDate = null;
       selectedSongs = [];
+      renderMaidOptions();
+      renderTodayStaff();
     });
   });
 
@@ -848,109 +640,8 @@ textarea{width:100%;min-height:130px;background:var(--ink-deep);border:1px solid
     }).catch(function(){});
   }
 
-  // ---------- admin: open dates ----------
-  function renderOpenDateManageList(){
-    var el = document.getElementById('openDateManageList');
-    var keys = Object.keys(openDates).sort();
-    if(keys.length===0){ el.innerHTML = '<span style="color:var(--parchment-dim);font-size:12px;">尚未開放任何日期</span>'; return; }
-    var reservedDates = {};
-    Object.keys(reservations).forEach(function(id){ reservedDates[reservations[id].date] = true; });
-    var html = '<div style="display:flex;flex-direction:column;gap:6px;">';
-    keys.forEach(function(d){
-      html += '<div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:6px;">'
-        + '<span>'+d+(reservedDates[d]?' <span style="color:var(--rose);font-size:11px;">已被預約</span>':' <span style="color:var(--sage);font-size:11px;">可預約</span>')+'</span>'
-        + '<button class="icon-btn" data-remove-date="'+d+'" title="取消開放">✕</button>'
-        + '</div>';
-    });
-    html += '</div>';
-    el.innerHTML = html;
-    el.querySelectorAll('[data-remove-date]').forEach(function(btn){
-      btn.addEventListener('click', function(){ openDatesRef.child(btn.getAttribute('data-remove-date')).remove(); });
-    });
-  }
-
-  document.getElementById('addOpenDate').addEventListener('click', function(){
-    if(!isConfigured) return;
-    var date = document.getElementById('newOpenDate').value.trim();
-    if(!date) return;
-    openDatesRef.child(date).set(true);
-    document.getElementById('newOpenDate').value = '';
-  });
-
-  function renderAdminReservations(){
-    var el = document.getElementById('adminReservationList');
-    var keys = Object.keys(reservations);
-    if(keys.length===0){ el.innerHTML = '尚無預約'; return; }
-    var arr = keys.map(function(id){ var r=reservations[id]; r.id=id; return r; });
-    arr.sort(function(a,b){ return a.date.localeCompare(b.date); });
-    var html = '<div style="display:flex;flex-direction:column;gap:8px;">';
-    arr.forEach(function(r){
-      var songs = (r.songs||[]).map(function(s){ return s.title; }).join('、') || '（未選歌曲）';
-      html += '<div style="border-bottom:1px solid var(--line);padding-bottom:8px;">'
-        + '<div style="display:flex;justify-content:space-between;align-items:center;">'
-        + '<span>'+r.date+' · '+escapeHtml(r.name)+' · '+r.size+'位'+(r.maid?' · 指名：'+escapeHtml(r.maid):'')+(r.note?' · '+escapeHtml(r.note):'')+'</span>'
-        + '<button class="icon-btn" data-cancel="'+r.id+'" title="取消預約">✕</button>'
-        + '</div>'
-        + '<div style="font-size:11.5px;color:var(--parchment-dim);margin-top:3px;">點歌：'+escapeHtml(songs)+'</div>'
-        + '</div>';
-    });
-    html += '</div>';
-    el.innerHTML = html;
-    el.querySelectorAll('[data-cancel]').forEach(function(btn){
-      btn.addEventListener('click', function(){ reservationsRef.child(btn.getAttribute('data-cancel')).remove(); });
-    });
-  }
-
-  // ---------- rules ----------
-  document.getElementById('saveRules').addEventListener('click', function(){
-    if(!isConfigured) return;
-    rulesRef.set(document.getElementById('rulesEditor').value);
-  });
-  document.getElementById('hideRules').addEventListener('click', function(){
-    if(!isConfigured) return;
-    rulesRef.set('');
-    document.getElementById('rulesEditor').value = '';
-  });
-
-  // ---------- admin login ----------
-  document.getElementById('djLoginToggle').addEventListener('click', function(){
-    var body = document.getElementById('djLoginBody');
-    body.style.display = body.style.display === 'none' ? 'block' : 'none';
-  });
-  document.getElementById('adminLoginBtn').addEventListener('click', function(){
-    if(!isConfigured) return;
-    var email = document.getElementById('adminEmail').value.trim();
-    var pw = document.getElementById('adminPassword').value;
-    firebase.auth().signInWithEmailAndPassword(email, pw).then(function(){
-      document.getElementById('loginError').style.display = 'none';
-      document.getElementById('adminPassword').value = '';
-    }).catch(function(){
-      document.getElementById('loginError').style.display = 'block';
-    });
-  });
-  document.getElementById('adminLogoutBtn').addEventListener('click', function(){ firebase.auth().signOut(); });
-
-  document.getElementById('djToggle').addEventListener('click', function(){
-    var body = document.getElementById('djBody');
-    var open = body.classList.toggle('open');
-    document.getElementById('djChevron').textContent = open ? '▴' : '▾';
-  });
-
-  if(isConfigured){
-    firebase.auth().onAuthStateChanged(function(user){
-      if(user){
-        document.getElementById('djToggle').style.display = 'flex';
-        document.getElementById('djLoginToggle').style.display = 'none';
-        document.getElementById('djLoginBody').style.display = 'none';
-      }else{
-        document.getElementById('djToggle').style.display = 'none';
-        document.getElementById('djBody').classList.remove('open');
-        document.getElementById('djLoginToggle').style.display = 'inline';
-      }
-    });
-  }
-
   renderSelectedSongs();
+  renderTodayStaff();
 })();
 </script>
 
