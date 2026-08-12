@@ -103,6 +103,21 @@ body{
 }
 .full-notice span{color:var(--parchment-dim);font-size:14px;line-height:1.7;}
 #dateList{display:flex;flex-wrap:wrap;gap:10px;}
+.date-chip{flex-direction:column;align-items:flex-start;gap:1px;line-height:1.35;text-align:left;}
+.date-chip .date-status{font-size:12px;color:var(--sage);}
+.date-chip.is-full,.date-chip.is-pending{cursor:not-allowed;opacity:.56;border-color:var(--line);color:var(--parchment-dim);}
+.date-chip.is-full .date-status{color:var(--rose);}
+.date-chip.is-pending .date-status{color:var(--mist);}
+.field{display:flex;flex-direction:column;gap:7px;flex:1;min-width:160px;}
+.field.compact{flex:0 0 110px;min-width:110px;}
+.field-label{font-size:13px;color:var(--parchment-dim);}
+.quick-reminder{margin:18px 0 0;padding:13px 15px;border-left:2px solid var(--gold-dim);background:rgba(202,160,107,.07);border-radius:0 8px 8px 0;color:var(--parchment-dim);font-size:13px;line-height:1.75;}
+.success-panel{border-color:rgba(143,166,136,.44);background:linear-gradient(135deg,rgba(143,166,136,.10),var(--card));}
+.success-panel h3{font-family:'Noto Serif TC',serif;color:var(--sage);font-size:21px;margin:0 0 8px;}
+.success-panel > p{color:var(--parchment-dim);font-size:14px;margin:0 0 16px;}
+.booking-summary{display:grid;grid-template-columns:130px minmax(0,1fr);gap:8px 14px;padding:15px;background:var(--ink-deep);border:1px solid var(--line);border-radius:10px;font-size:14px;}
+.booking-summary dt{color:var(--parchment-dim);}
+.booking-summary dd{margin:0;color:var(--parchment);overflow-wrap:anywhere;}
 
 #rulesContent > *:first-child{margin-top:0;}
 .rules-title{
@@ -124,7 +139,7 @@ body{
 .rules-p{font-size:14px;color:var(--parchment-dim);margin:3px 0 8px;line-height:1.8;}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
 
-input[type=text]{
+input[type=text],input[type=number]{
   background:var(--ink-deep);border:1px solid var(--line);color:var(--parchment);
   min-height:46px;border-radius:9px;padding:11px 13px;font-size:16px;font-family:inherit;
 }
@@ -135,6 +150,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
 .btn:hover{background:rgba(202,160,107,0.1);}
 .btn.primary{background:var(--gold-dim);color:var(--ink-deep);border-color:var(--gold-dim);font-weight:500;}
 .btn.primary:hover{background:var(--gold);}
+.btn:disabled{cursor:wait;opacity:.62;}
 .btn.ghost{border-color:var(--line);color:var(--parchment-dim);}
 .btn.ghost:hover{color:var(--parchment);border-color:var(--parchment-dim);}
 .btn.small{padding:8px 14px;font-size:13px;}
@@ -142,9 +158,10 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
 .chip{
   display:inline-flex;align-items:center;gap:6px;background:var(--ink-deep);
   min-height:44px;border:1px solid var(--line);border-radius:24px;padding:10px 17px;font-size:15px;
-  cursor:pointer;margin:0;
+  color:var(--parchment);font-family:inherit;cursor:pointer;margin:0;
 }
 .chip:hover{border-color:var(--gold-dim);color:var(--gold);}
+.chip:disabled{cursor:not-allowed;}
 .chip .artist{color:var(--parchment-dim);font-size:12px;}
 
 .staff-chip{
@@ -180,6 +197,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
   .booking-top-grid{grid-template-columns:1fr;gap:16px;margin-bottom:16px;}
   .booking-main .panel{margin-bottom:16px;}
   #bookingForm input[type=text],
+  #bookingForm input[type=number],
   #bookingForm select{
     width:100%!important;
     min-width:0!important;
@@ -191,6 +209,10 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
   .full-notice{padding:16px;}
   .full-notice strong{font-size:16px;}
   .chip{width:100%;justify-content:center;}
+  .date-chip{align-items:center;text-align:center;}
+  .field,.field.compact{width:100%;min-width:0;flex:1 1 100%;}
+  .booking-summary{grid-template-columns:1fr;gap:3px;}
+  .booking-summary dd{margin:0 0 7px;}
 }
 </style>
 </head>
@@ -232,16 +254,28 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
       <div class="panel" id="bookingForm" style="display:none;">
         <p class="panel-title">填寫預約資料 · <span id="selectedDateLabel"></span></p>
         <div class="row">
-          <input type="text" id="bookName" placeholder="角色名／稱呼" style="flex:1;min-width:120px;">
-          <input type="text" id="bookSizeInput" placeholder="人數" style="width:70px;">
+          <label class="field">
+            <span class="field-label">遊戲內角色名稱</span>
+            <input type="text" id="bookName" placeholder="請填寫角色名稱" autocomplete="name">
+          </label>
+          <label class="field compact">
+            <span class="field-label">預約人數</span>
+            <input type="number" id="bookSizeInput" placeholder="人數" min="1" max="20" inputmode="numeric">
+          </label>
         </div>
         <div class="row" style="margin-top:8px;">
-          <select id="bookMaid" style="flex:1;min-width:160px;background:var(--ink-deep);border:1px solid var(--line);color:var(--parchment);border-radius:7px;padding:9px 11px;font-size:14px;font-family:inherit;">
-            <option value="">指名女僕（選填）</option>
-          </select>
+          <label class="field">
+            <span class="field-label">指名女僕（選填）</span>
+            <select id="bookMaid" style="flex:1;min-width:160px;background:var(--ink-deep);border:1px solid var(--line);color:var(--parchment);border-radius:7px;padding:9px 11px;font-size:14px;font-family:inherit;">
+              <option value="">不指定</option>
+            </select>
+          </label>
         </div>
         <div class="row" style="margin-top:8px;">
-          <input type="text" id="bookNote" placeholder="備註（選填）" style="flex:1;min-width:120px;">
+          <label class="field">
+            <span class="field-label">想告訴我們的事情（選填）</span>
+            <input type="text" id="bookNote" placeholder="例如同行需求或其他備註">
+          </label>
         </div>
 
         <p class="panel-title" style="margin-top:18px;">自由點歌（最多3首，需附原曲網址）</p>
@@ -253,11 +287,18 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
 
         <div id="selectedSongsList" style="margin-top:10px;"></div>
 
+        <p class="quick-reminder">每個時段僅接待一組主人。送出前請再次確認日期、角色名稱與人數；如需變更或取消，請提前聯絡店家。</p>
+
         <div class="row" style="margin-top:14px;">
           <button class="btn primary" id="submitBooking">確認預約</button>
           <button class="btn ghost" id="cancelBookingForm">取消</button>
         </div>
         <p id="bookingError" style="font-size:13px;color:var(--rose);margin:10px 0 0;display:none;"></p>
+      </div>
+      <div class="panel success-panel" id="bookingSuccess" role="status" aria-live="polite" style="display:none;">
+        <h3>預約已成功送出</h3>
+        <p>以下是本次預約內容，建議截圖保留此頁；如需修改或取消，請透過 Discord 聯絡我們。</p>
+        <dl class="booking-summary" id="bookingSummary"></dl>
       </div>
       <div class="panel" id="rulesPanel" style="display:none;">
         <p class="panel-title">預約須知</p>
@@ -293,6 +334,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
   var webhookUrl = '';
   var selectedDate = null;
   var selectedSongs = []; // [{title, url}]
+  var submissionInProgress = false;
   var db, openDatesRef, reservationsRef, webhookRef, rulesRef, staffRosterRef, todayStaffRef, staffSchedulesRef;
 
   function petals(){
@@ -349,7 +391,39 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     if(!dateStr) return '';
     var parts = dateStr.split('-');
     if(parts.length !== 3) return dateStr;
-    return parts[1].replace(/^0/,'') + '/' + parts[2].replace(/^0/,'');
+    var weekdays = ['日','一','二','三','四','五','六'];
+    var date = new Date(Number(parts[0]), Number(parts[1])-1, Number(parts[2]));
+    return parts[1] + '／' + parts[2] + '（' + weekdays[date.getDay()] + '）';
+  }
+  function getScheduleForDate(dateStr){
+    var schedule = dateStr && staffSchedules[dateStr];
+    if(!schedule && dateStr && todayStaff.date===dateStr && Array.isArray(todayStaff.staffIds)) schedule = todayStaff;
+    return schedule || null;
+  }
+  function hasPublishedSchedule(dateStr){
+    var schedule = getScheduleForDate(dateStr);
+    return !!(schedule && Array.isArray(schedule.staffIds) && schedule.staffIds.length);
+  }
+  function setSubmitting(isSubmitting){
+    submissionInProgress = isSubmitting;
+    var btn = document.getElementById('submitBooking');
+    btn.disabled = isSubmitting;
+    btn.textContent = isSubmitting ? '預約送出中…' : '確認預約';
+  }
+  function renderBookingSuccess(data){
+    var songs = data.songs && data.songs.length
+      ? data.songs.map(function(song){ return escapeHtml(song.title); }).join('、')
+      : '未選擇歌曲';
+    document.getElementById('bookingSummary').innerHTML =
+      '<dt>預約日期</dt><dd>'+escapeHtml(formatDateLabel(data.date))+'</dd>'+
+      '<dt>遊戲內角色名稱</dt><dd>'+escapeHtml(data.name)+'</dd>'+
+      '<dt>預約人數</dt><dd>'+escapeHtml(String(data.size))+' 位</dd>'+
+      '<dt>指名女僕</dt><dd>'+escapeHtml(data.maid || '不指定')+'</dd>'+
+      '<dt>自由點歌</dt><dd>'+songs+'</dd>'+
+      '<dt>備註</dt><dd>'+escapeHtml(data.note || '無')+'</dd>';
+    var panel = document.getElementById('bookingSuccess');
+    panel.style.display = 'block';
+    panel.scrollIntoView({behavior:'smooth', block:'center'});
   }
 
   if(isConfigured){
@@ -390,12 +464,14 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
       todayStaff = snap.val() || {};
       renderMaidOptions();
       renderTodayStaff();
+      renderDateList();
     });
 
     staffSchedulesRef.on('value', function(snap){
       staffSchedules = snap.val() || {};
       renderMaidOptions();
       renderTodayStaff();
+      renderDateList();
     });
 
     openDatesRef.on('value', function(snap){
@@ -413,20 +489,21 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
   function renderMaidOptions(){
     var sel = document.getElementById('bookMaid');
     var current = sel.value;
-    var schedule = selectedDate && staffSchedules[selectedDate];
-    var legacySchedule = selectedDate && todayStaff.date===selectedDate && Array.isArray(todayStaff.staffIds) ? todayStaff : null;
-    if(!schedule && legacySchedule) schedule = legacySchedule;
+    var schedule = getScheduleForDate(selectedDate);
     var hasSchedule = !!(schedule && Array.isArray(schedule.staffIds));
     var keys = hasSchedule
       ? schedule.staffIds.filter(function(id){ return !!staffRoster[id]; })
-      : Object.keys(staffRoster);
+      : [];
     var excluded = ['店長','樂手'];
     var maidKeys = keys.filter(function(k){
       var role = (staffRoster[k].role || '').trim();
       return excluded.indexOf(role) === -1;
     });
-    var useKeys = hasSchedule ? maidKeys : (maidKeys.length ? maidKeys : keys);
-    var html = '<option value="">指名女僕（選填）</option>';
+    var useKeys = maidKeys;
+    var html = '<option value="">不指定</option>';
+    if(!hasSchedule){
+      html += '<option value="" disabled>排班確認中，暫不開放指名</option>';
+    }
     if(hasSchedule && useKeys.length===0){
       html += '<option value="" disabled>此時段沒有可指名的女僕</option>';
     }
@@ -449,13 +526,11 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
       panel.style.display = 'block';
       return;
     }
-    var schedule = displayDate && staffSchedules[displayDate];
-    var staffIds = schedule && Array.isArray(schedule.staffIds)
-      ? schedule.staffIds
-      : (todayStaff.date===displayDate ? (todayStaff.staffIds||[]) : []);
+    var schedule = getScheduleForDate(displayDate);
+    var staffIds = schedule && Array.isArray(schedule.staffIds) ? schedule.staffIds : [];
     if(!staffIds.length){
       titleEl.textContent = formatDateLabel(displayDate)+' 值班人員';
-      el.innerHTML = '<span class="staff-empty">此日期尚未公布排班，指名女僕將暫不開放。</span>';
+      el.innerHTML = '<span class="staff-empty">此日期尚未公布排班，目前暫不開放預約。</span>';
       panel.style.display = 'block';
       return;
     }
@@ -467,7 +542,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     });
     if(!html){
       titleEl.textContent = formatDateLabel(displayDate)+' 值班人員';
-      el.innerHTML = '<span class="staff-empty">此日期尚未公布排班，指名女僕將暫不開放。</span>';
+      el.innerHTML = '<span class="staff-empty">此日期尚未公布排班，目前暫不開放預約。</span>';
       panel.style.display = 'block';
       return;
     }
@@ -526,7 +601,14 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     var reservedDates = {};
     Object.keys(reservations).forEach(function(id){ reservedDates[reservations[id].date] = true; });
     var opened = Object.keys(openDates).sort();
-    var available = opened.filter(function(d){ return !reservedDates[d]; });
+    if(selectedDate && (opened.indexOf(selectedDate)===-1 || reservedDates[selectedDate] || !hasPublishedSchedule(selectedDate))){
+      selectedDate = null;
+      selectedSongs = [];
+      document.getElementById('bookingForm').style.display = 'none';
+      setSubmitting(false);
+      renderMaidOptions();
+      renderTodayStaff();
+    }
     if(opened.length===0){
       el.innerHTML = '<span style="color:var(--parchment-dim);font-size:14px;">目前沒有開放的預約日期</span>';
       document.getElementById('bookingForm').style.display = 'none';
@@ -535,26 +617,27 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
       renderTodayStaff();
       return;
     }
-    if(available.length===0){
-      el.innerHTML = '<div class="full-notice" role="status"><strong>本次營業時段預約已額滿</strong><span>感謝您的關注，下一次預約開放資訊請留意官方公告。</span></div>';
-      document.getElementById('bookingForm').style.display = 'none';
-      selectedDate = null;
-      renderMaidOptions();
-      renderTodayStaff();
-      return;
-    }
     var html = '';
-    available.forEach(function(d){
-      html += '<span class="chip" data-date="'+d+'">'+d+'</span>';
+    var allFull = opened.every(function(d){ return !!reservedDates[d]; });
+    if(allFull){
+      html += '<div class="full-notice" role="status"><strong>本次營業時段預約已額滿</strong><span>感謝您的關注，下一次預約開放資訊請留意官方公告。</span></div>';
+    }
+    opened.forEach(function(d){
+      var isFull = !!reservedDates[d];
+      var isPending = !isFull && !hasPublishedSchedule(d);
+      var stateClass = isFull ? 'is-full' : (isPending ? 'is-pending' : 'is-available');
+      var status = isFull ? '已額滿' : (isPending ? '排班確認中' : '尚可預約');
+      html += '<button type="button" class="chip date-chip '+stateClass+'" data-date="'+d+'"'+(isFull||isPending?' disabled':'')+'><strong>'+escapeHtml(formatDateLabel(d))+'</strong><span class="date-status">'+status+'</span></button>';
     });
     el.innerHTML = html;
-    el.querySelectorAll('.chip').forEach(function(chip){
+    el.querySelectorAll('.is-available').forEach(function(chip){
       chip.addEventListener('click', function(){
         selectedDate = chip.getAttribute('data-date');
         selectedSongs = [];
+        document.getElementById('bookingSuccess').style.display = 'none';
         renderMaidOptions();
         renderTodayStaff();
-        document.getElementById('selectedDateLabel').textContent = selectedDate;
+        document.getElementById('selectedDateLabel').textContent = formatDateLabel(selectedDate);
         document.getElementById('bookingForm').style.display = 'block';
         document.getElementById('bookingError').style.display = 'none';
         renderSelectedSongs();
@@ -567,25 +650,31 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     document.getElementById('bookingForm').style.display = 'none';
     selectedDate = null;
     selectedSongs = [];
+    setSubmitting(false);
     renderMaidOptions();
     renderTodayStaff();
   });
 
   document.getElementById('submitBooking').addEventListener('click', function(){
-    if(!isConfigured || !selectedDate) return;
+    if(!isConfigured || !selectedDate || submissionInProgress) return;
     var name = document.getElementById('bookName').value.trim();
     var size = parseInt(document.getElementById('bookSizeInput').value, 10);
     var maid = document.getElementById('bookMaid').value;
     var note = document.getElementById('bookNote').value.trim();
     var errEl = document.getElementById('bookingError');
-    if(!name || !size || size < 1){
-      errEl.textContent = '請填寫角色名跟人數';
+    if(!name || !size || size < 1 || size > 20){
+      errEl.textContent = '請填寫角色名稱，預約人數需為 1～20 位';
       errEl.style.display = 'block';
       return;
     }
+    if(!hasPublishedSchedule(selectedDate)){
+      errEl.textContent = '此日期的排班尚未公布，目前暫不開放預約';
+      errEl.style.display = 'block';
+      renderDateList();
+      return;
+    }
     if(maid){
-      var schedule = staffSchedules[selectedDate];
-      if(!schedule && todayStaff.date===selectedDate) schedule = todayStaff;
+      var schedule = getScheduleForDate(selectedDate);
       if(schedule && Array.isArray(schedule.staffIds)){
         var maidStillAvailable = schedule.staffIds.some(function(id){ return staffRoster[id] && staffRoster[id].name===maid; });
         if(!maidStillAvailable){
@@ -596,6 +685,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
         }
       }
     }
+    setSubmitting(true);
     reservationsRef.once('value').then(function(snap){
       var current = snap.val() || {};
       var taken = Object.keys(current).some(function(id){ return current[id].date === selectedDate; });
@@ -604,30 +694,40 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
         errEl.style.display = 'block';
         selectedDate = null;
         document.getElementById('bookingForm').style.display = 'none';
+        setSubmitting(false);
+        renderDateList();
         return;
       }
       var id = reservationsRef.push().key;
-      reservationsRef.child(id).set({
+      var bookingData = {
         date: selectedDate,
         name: name,
         size: size,
         maid: maid,
         note: note,
-        songs: selectedSongs,
+        songs: selectedSongs.slice(),
         createdAt: Date.now()
-      });
-      var songLines = selectedSongs.length ? selectedSongs.map(function(s){ return '・'+s.title; }).join('\n') : '（未選歌曲）';
-      sendDiscordNotification('新的預約通知\n'+selectedDate+' ｜ '+name+' ｜ '+size+'位'+(maid?' ｜ 指名：'+maid:'')+(note?' ｜ '+note:'')+'\n點歌：\n'+songLines);
+      };
+      return reservationsRef.child(id).set(bookingData).then(function(){
+      var songLines = bookingData.songs.length ? bookingData.songs.map(function(s){ return '・'+s.title; }).join('\n') : '（未選歌曲）';
+      sendDiscordNotification('新的預約通知\n'+bookingData.date+' ｜ '+name+' ｜ '+size+'位'+(maid?' ｜ 指名：'+maid:'')+(note?' ｜ '+note:'')+'\n點歌：\n'+songLines);
       document.getElementById('bookName').value = '';
       document.getElementById('bookSizeInput').value = '';
       document.getElementById('bookMaid').value = '';
       document.getElementById('bookNote').value = '';
       document.getElementById('bookingForm').style.display = 'none';
       errEl.style.display = 'none';
+      setSubmitting(false);
+      renderBookingSuccess(bookingData);
       selectedDate = null;
       selectedSongs = [];
       renderMaidOptions();
       renderTodayStaff();
+      });
+    }).catch(function(){
+      setSubmitting(false);
+      errEl.textContent = '預約送出失敗，請確認網路連線後再試一次';
+      errEl.style.display = 'block';
     });
   });
 
