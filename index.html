@@ -245,7 +245,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
       </div>
 
       <div class="panel" id="todayStaffPanel">
-        <p class="panel-title" id="todayStaffTitle">選擇日期後顯示值班人員</p>
+        <p class="panel-title" id="todayStaffTitle">選擇日期後顯示可指名女僕</p>
         <div id="todayStaffContent"><span class="staff-empty">請先從左側選擇想預約的日期。</span></div>
       </div>
   </div>
@@ -404,6 +404,19 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     var schedule = getScheduleForDate(dateStr);
     return !!(schedule && Array.isArray(schedule.staffIds) && schedule.staffIds.length);
   }
+  function isNominatableStaff(staff){
+    if(!staff || staff.nominatable === false) return false;
+    var role = String(staff.role || '').trim();
+    if(role === '店長' || role.indexOf('樂手') !== -1 || role.indexOf('Musician') !== -1) return false;
+    return true;
+  }
+  function getNominatableStaffIds(dateStr){
+    var schedule = getScheduleForDate(dateStr);
+    if(!schedule || !Array.isArray(schedule.staffIds)) return [];
+    return schedule.staffIds.filter(function(id){
+      return !!staffRoster[id] && isNominatableStaff(staffRoster[id]);
+    });
+  }
   function setSubmitting(isSubmitting){
     submissionInProgress = isSubmitting;
     var btn = document.getElementById('submitBooking');
@@ -491,15 +504,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     var current = sel.value;
     var schedule = getScheduleForDate(selectedDate);
     var hasSchedule = !!(schedule && Array.isArray(schedule.staffIds));
-    var keys = hasSchedule
-      ? schedule.staffIds.filter(function(id){ return !!staffRoster[id]; })
-      : [];
-    var excluded = ['店長','樂手'];
-    var maidKeys = keys.filter(function(k){
-      var role = (staffRoster[k].role || '').trim();
-      return excluded.indexOf(role) === -1;
-    });
-    var useKeys = maidKeys;
+    var useKeys = hasSchedule ? getNominatableStaffIds(selectedDate) : [];
     var html = '<option value="">不指定</option>';
     if(!hasSchedule){
       html += '<option value="" disabled>排班確認中，暫不開放指名</option>';
@@ -521,7 +526,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     var titleEl = document.getElementById('todayStaffTitle');
     var displayDate = selectedDate;
     if(!displayDate){
-      titleEl.textContent = '選擇日期後顯示值班人員';
+      titleEl.textContent = '選擇日期後顯示可指名女僕';
       el.innerHTML = '<span class="staff-empty">請先選擇想預約的日期。</span>';
       panel.style.display = 'block';
       return;
@@ -529,24 +534,24 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     var schedule = getScheduleForDate(displayDate);
     var staffIds = schedule && Array.isArray(schedule.staffIds) ? schedule.staffIds : [];
     if(!staffIds.length){
-      titleEl.textContent = formatDateLabel(displayDate)+' 值班人員';
+      titleEl.textContent = formatDateLabel(displayDate)+'　本次可指名女僕';
       el.innerHTML = '<span class="staff-empty">此日期尚未公布排班，目前暫不開放預約。</span>';
       panel.style.display = 'block';
       return;
     }
     var html = '';
-    staffIds.forEach(function(id){
+    getNominatableStaffIds(displayDate).forEach(function(id){
       var s = staffRoster[id];
       if(!s) return;
       html += '<span class="staff-chip">'+escapeHtml(s.name)+(s.role?' <span class="role">'+escapeHtml(s.role)+'</span>':'')+'</span>';
     });
     if(!html){
-      titleEl.textContent = formatDateLabel(displayDate)+' 值班人員';
-      el.innerHTML = '<span class="staff-empty">此日期尚未公布排班，目前暫不開放預約。</span>';
+      titleEl.textContent = formatDateLabel(displayDate)+'　本次可指名女僕';
+      el.innerHTML = '<span class="staff-empty">本次沒有開放可指名女僕，預約時可選擇「不指定」。</span>';
       panel.style.display = 'block';
       return;
     }
-    titleEl.textContent = formatDateLabel(displayDate) + ' 在班店員';
+    titleEl.textContent = formatDateLabel(displayDate) + '　本次可指名女僕';
     el.innerHTML = html;
     panel.style.display = 'block';
   }
@@ -676,7 +681,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     if(maid){
       var schedule = getScheduleForDate(selectedDate);
       if(schedule && Array.isArray(schedule.staffIds)){
-        var maidStillAvailable = schedule.staffIds.some(function(id){ return staffRoster[id] && staffRoster[id].name===maid; });
+        var maidStillAvailable = getNominatableStaffIds(selectedDate).some(function(id){ return staffRoster[id] && staffRoster[id].name===maid; });
         if(!maidStillAvailable){
           errEl.textContent = '這位女僕目前不在此日期的排班中，請重新選擇';
           errEl.style.display = 'block';
