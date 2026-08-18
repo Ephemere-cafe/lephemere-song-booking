@@ -336,7 +336,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
   var selectedDate = null;
   var selectedSongs = []; // [{title, url}]
   var submissionInProgress = false;
-  var db, openDatesRef, reservationsRef, webhookRef, rulesRef, staffRosterRef, todayStaffRef, staffSchedulesRef;
+  var db, openDatesRef, reservationsRef, webhookRef, rulesRef, staffRosterRef, todayStaffDateRef, todayStaffIdsRef, staffSchedulesRef;
 
   function petals(){
     var wrap = document.getElementById('wrap');
@@ -400,7 +400,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     var embedded = todayStaff && todayStaff.schedules && typeof todayStaff.schedules === 'object'
       ? todayStaff.schedules
       : {};
-    staffSchedules = Object.assign({}, legacyStaffSchedules, embedded);
+    staffSchedules = Object.assign({}, embedded, legacyStaffSchedules);
   }
   function getScheduleForDate(dateStr){
     var schedule = dateStr && staffSchedules[dateStr];
@@ -454,7 +454,8 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     webhookRef = db.ref('lephemere/webhookUrl');
     rulesRef = db.ref('lephemere/rules');
     staffRosterRef = db.ref('lephemere/staffRoster');
-    todayStaffRef = db.ref('lephemere/todayStaff');
+    todayStaffDateRef = db.ref('lephemere/todayStaff/date');
+    todayStaffIdsRef = db.ref('lephemere/todayStaff/staffIds');
     staffSchedulesRef = db.ref('lephemere/staffSchedules');
 
     db.ref('.info/connected').on('value', function(snap){
@@ -480,8 +481,16 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
       renderTodayStaff();
     });
 
-    todayStaffRef.on('value', function(snap){
-      todayStaff = snap.val() || {};
+    todayStaffDateRef.on('value', function(snap){
+      todayStaff.date = snap.val() || '';
+      rebuildStaffSchedules();
+      renderMaidOptions();
+      renderTodayStaff();
+      renderDateList();
+    });
+
+    todayStaffIdsRef.on('value', function(snap){
+      todayStaff.staffIds = Array.isArray(snap.val()) ? snap.val() : [];
       rebuildStaffSchedules();
       renderMaidOptions();
       renderTodayStaff();
