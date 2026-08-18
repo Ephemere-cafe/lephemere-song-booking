@@ -420,7 +420,12 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
   function getNominatableStaffIds(dateStr){
     var schedule = getScheduleForDate(dateStr);
     if(!schedule || !Array.isArray(schedule.staffIds)) return [];
-    return schedule.staffIds.filter(function(id){
+    var reservationIds = Array.isArray(schedule.reservationStaffIds)
+      ? schedule.reservationStaffIds
+      : schedule.staffIds;
+    return reservationIds.filter(function(id){
+      return schedule.staffIds.indexOf(id)>-1;
+    }).filter(function(id){
       return !!staffRoster[id] && isNominatableStaff(staffRoster[id]);
     });
   }
@@ -701,7 +706,7 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
       if(schedule && Array.isArray(schedule.staffIds)){
         var maidStillAvailable = getNominatableStaffIds(selectedDate).some(function(id){ return staffRoster[id] && staffRoster[id].name===maid; });
         if(!maidStillAvailable){
-          errEl.textContent = '這位女僕目前不在此日期的排班中，請重新選擇';
+          errEl.textContent = '這位女僕目前沒有開放此日期的預約指名，請重新選擇';
           errEl.style.display = 'block';
           renderMaidOptions();
           return;
