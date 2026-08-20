@@ -332,11 +332,10 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
   var todayStaff = {};
   var staffSchedules = {};
   var legacyStaffSchedules = {};
-  var webhookUrl = '';
   var selectedDate = null;
   var selectedSongs = []; // [{title, url}]
   var submissionInProgress = false;
-  var db, openDatesRef, reservationsRef, webhookRef, rulesRef, staffRosterRef, todayStaffDateRef, todayStaffIdsRef, staffSchedulesRef;
+  var db, openDatesRef, reservationsRef, rulesRef, staffRosterRef, todayStaffDateRef, todayStaffIdsRef, staffSchedulesRef;
 
   function petals(){
     var wrap = document.getElementById('wrap');
@@ -456,7 +455,6 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     db = firebase.database();
     openDatesRef = db.ref('lephemere/openDates');
     reservationsRef = db.ref('lephemere/reservations');
-    webhookRef = db.ref('lephemere/webhookUrl');
     rulesRef = db.ref('lephemere/rules');
     staffRosterRef = db.ref('lephemere/staffRoster');
     todayStaffDateRef = db.ref('lephemere/todayStaff/date');
@@ -466,8 +464,6 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
     db.ref('.info/connected').on('value', function(snap){
       document.getElementById('connDot').className = snap.val()===true ? 'dot online' : 'dot offline';
     });
-
-    webhookRef.on('value', function(snap){ webhookUrl = snap.val() || ''; });
 
     rulesRef.on('value', function(snap){
       var text = snap.val() || '';
@@ -737,8 +733,6 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
         createdAt: Date.now()
       };
       return reservationsRef.child(id).set(bookingData).then(function(){
-      var songLines = bookingData.songs.length ? bookingData.songs.map(function(s){ return '・'+s.title; }).join('\n') : '（未選歌曲）';
-      sendDiscordNotification('新的預約通知\n'+bookingData.date+' ｜ '+name+' ｜ '+size+'位'+(maid?' ｜ 指名：'+maid:'')+(note?' ｜ '+note:'')+'\n點歌：\n'+songLines);
       document.getElementById('bookName').value = '';
       document.getElementById('bookSizeInput').value = '';
       document.getElementById('bookMaid').value = '';
@@ -758,15 +752,6 @@ input:focus,select:focus{outline:2px solid rgba(202,160,107,0.28);outline-offset
       errEl.style.display = 'block';
     });
   });
-
-  function sendDiscordNotification(text){
-    if(!webhookUrl) return;
-    fetch(webhookUrl, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({content: text})
-    }).catch(function(){});
-  }
 
   renderSelectedSongs();
   renderTodayStaff();
